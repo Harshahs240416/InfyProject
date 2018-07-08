@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telecom.Call;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class MainFragment  extends Fragment{
         ClientInterface clientInterface = NetworkClient.getClient("https://dl.dropboxusercontent.com/s/2iodh4vg0eortkl/").create(ClientInterface.class);
         retrofit2.Call<Model> call = clientInterface.getRowData();
         call.enqueue(new Callback<Model>() {
+
             @Override
             public void onResponse(retrofit2.Call<Model> call, Response<Model> response) {
                 if(response != null){
@@ -47,7 +49,8 @@ public class MainFragment  extends Fragment{
 
             @Override
             public void onFailure(retrofit2.Call<Model> call, Throwable t) {
-                Toast.makeText(getActivity().getApplicationContext(), "Response Failure", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Response Failure im inside On Failure", Toast.LENGTH_SHORT).show();
+                Log.d("inOnFailure", "Check if im in");
             }
         });
         Toast.makeText(getActivity().getApplicationContext(), "Out of Web Service", Toast.LENGTH_SHORT).show();

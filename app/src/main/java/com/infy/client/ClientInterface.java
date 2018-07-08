@@ -9,7 +9,7 @@ import retrofit2.http.Query;
 
 public interface ClientInterface {
 
-    @GET("facts")
+    @GET("facts.json")
     Call<Model> getRowData();
 
 }
