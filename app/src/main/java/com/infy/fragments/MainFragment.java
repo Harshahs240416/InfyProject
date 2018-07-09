@@ -19,13 +19,14 @@ import com.infy.client.NetworkClient;
 import com.infy.model.Model;
 import com.infy.model.Row;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainFragment  extends Fragment{
+public class MainFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     String mHeaderTitle;
@@ -40,11 +41,10 @@ public class MainFragment  extends Fragment{
 
             @Override
             public void onResponse(retrofit2.Call<Model> call, Response<Model> response) {
-                if(response != null){
-                    rowLists = response.body().getRows();
-                }else {
-                    Toast.makeText(getActivity().getApplicationContext(), "Response Error", Toast.LENGTH_SHORT).show();
-                }
+                rowLists = response.body().getRows();
+                Toast.makeText(getActivity().getApplicationContext(), "Response Success", Toast.LENGTH_SHORT).show();
+                ListAdapter listAdapter = new ListAdapter(mHeaderTitle, rowLists);
+                mRecyclerView.setAdapter(listAdapter);
             }
 
             @Override
@@ -61,11 +61,9 @@ public class MainFragment  extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_fragment, container, false);
-        ListAdapter listAdapter = new ListAdapter(mHeaderTitle, rowLists);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView = (RecyclerView)view.findViewById(R.id.list_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.list_view);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setAdapter(listAdapter);
         return view;
     }
 
@@ -73,6 +71,8 @@ public class MainFragment  extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
+    
 
     @Override
     public void onStart() {

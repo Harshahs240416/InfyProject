@@ -1,16 +1,24 @@
 package com.infy.adapter;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.infosysproficiencyexcercise.R;
 import com.infy.model.Row;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +26,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.VH> {
 
     private List<Row> rowList;
 
-    public ListAdapter(String title, List<Row> rows){
+    public ListAdapter(String title, List<Row> rows) {
         this.rowList = rows;
     }
 
@@ -34,20 +42,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.VH> {
     @Override
     public void onBindViewHolder(@NonNull ListAdapter.VH holder, int position) {
         Row row = rowList.get(position);
-        if(row.getTitle() != null){
+        if (row.getTitle() != null) {
             holder.title.setText(row.getTitle());
-        }else{
-            holder.title.setText("No Title");
+        } else {
+            holder.title.setText("No Title found");
         }
-        if(row.getDescription() != null){
+        if (row.getDescription() != null) {
             holder.subject.setText(row.getDescription());
-        }else{
-            holder.subject.setText("No Description");
+        } else {
+            holder.subject.setText("No Description found");
         }
-        if(row.getImageHref() != null){
-            holder.imageView.setImageDrawable((Drawable)row.getImageHref());
-        }else{
-//            holder.imageView.setImageDrawable(null);
+        if (row.getImageHref() == null) {
+            holder.imageView.setBackgroundColor(Color.parseColor("#D3D3D3"));
+        } else {
+            Glide.with(holder.imageView.getContext()).load(row.getImageHref().toString()).centerCrop().into(holder.imageView);
         }
     }
 
@@ -56,6 +64,23 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.VH> {
         return rowList.size();
     }
 
+
+   /* public boolean isImageUrl(String imageUrl) {
+        boolean isImageUrl = false;
+        try {
+            URLConnection connection = new URL(imageUrl).openConnection();
+                String contentType = connection.getHeaderField("imageHref");
+            if(contentType.endsWith(".jpg") || contentType.endsWith(".png")){
+                isImageUrl = true;
+            }
+        }catch (MalformedURLException e){
+            isImageUrl = false;
+        }catch (IOException e1){
+            isImageUrl = false;
+        }
+        return isImageUrl;
+    }*/
+
     public class VH extends RecyclerView.ViewHolder {
         public TextView title;
         public TextView subject;
@@ -63,9 +88,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.VH> {
 
         public VH(View view) {
             super(view);
-            title = (TextView)view.findViewById(R.id.title);
-            subject = (TextView)view.findViewById(R.id.subject);
-            imageView = (ImageView)view.findViewById(R.id.display_pic);
+            title = (TextView) view.findViewById(R.id.title);
+            subject = (TextView) view.findViewById(R.id.subject);
+            imageView = (ImageView) view.findViewById(R.id.display_pic);
         }
 
     }
