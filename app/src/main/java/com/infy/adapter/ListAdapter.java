@@ -52,10 +52,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.VH> {
         } else {
             holder.subject.setText("No Description found");
         }
-        if (row.getImageHref() == null) {
-            holder.imageView.setBackgroundColor(Color.parseColor("#D3D3D3"));
+        if (row.getImageHref() != null) {
+            Glide.with(holder.imageView.getContext()).load(row.getImageHref().toString()).fitCenter().into(holder.imageView);
+            if (holder.imageView.getDrawable() == null) {
+                holder.imageView.setBackgroundColor(Color.parseColor("#D3D3D3"));
+            }
         } else {
-            Glide.with(holder.imageView.getContext()).load(row.getImageHref().toString()).centerCrop().into(holder.imageView);
+            holder.imageView.setBackgroundColor(Color.parseColor("#D3D3D3"));
         }
     }
 
@@ -63,23 +66,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.VH> {
     public int getItemCount() {
         return rowList.size();
     }
-
-
-   /* public boolean isImageUrl(String imageUrl) {
-        boolean isImageUrl = false;
-        try {
-            URLConnection connection = new URL(imageUrl).openConnection();
-                String contentType = connection.getHeaderField("imageHref");
-            if(contentType.endsWith(".jpg") || contentType.endsWith(".png")){
-                isImageUrl = true;
-            }
-        }catch (MalformedURLException e){
-            isImageUrl = false;
-        }catch (IOException e1){
-            isImageUrl = false;
-        }
-        return isImageUrl;
-    }*/
 
     public class VH extends RecyclerView.ViewHolder {
         public TextView title;

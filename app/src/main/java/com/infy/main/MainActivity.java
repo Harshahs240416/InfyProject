@@ -14,10 +14,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setActionBarTitle("");
         FragmentManager fragmentManager = getFragmentManager();
         android.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.list_container, new MainFragment());
         fragmentTransaction.commit();
 
+    }
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
     }
 }
